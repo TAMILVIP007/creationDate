@@ -66,8 +66,10 @@ dp.register_message_handler(service.help, commands=["help"])
 dp.register_message_handler(service.credits, commands=["credits"])
 dp.register_message_handler(app.reply_id, commands=["id"])
 dp.register_message_handler(
-    middle.username_reply, lambda m: any([x.type == "mention" for x in m.entities])
+    middle.username_reply,
+    lambda m: any(x.type == "mention" for x in m.entities),
 )
+
 dp.register_message_handler(app.reply_with_age)
 
 dp.register_callback_query_handler(callback.button_lang)

@@ -24,9 +24,7 @@ class Function:
 
     def _fit_data(self) -> Callable[[int], int]:
         fitted = np.polyfit(self.x, self.y, self.order)
-        func = np.poly1d(fitted)
-
-        return func
+        return np.poly1d(fitted)
 
     def add_datapoint(self, pair: tuple):
         pair[0] = str(pair[0])

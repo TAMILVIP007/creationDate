@@ -33,7 +33,7 @@ async def reply_with_age(message: types.Message):
     clean = clean_message(message)
 
     for key, value in clean.items():
-        if not (key == "forward_from" or key == "from"):
+        if not key in ["forward_from", "from"]:
             continue
 
         # interpolate the date
@@ -124,11 +124,7 @@ async def username_reply(self, message: types.Message):
         logger.info(f"2nd FloodWait; {e}")  # temporarily here
 
         sec = e.seconds
-        if sec > 60:
-            time_left = f"{sec // 60}m {sec % 60}s"
-        else:
-            time_left = f"{sec}s"
-
+        time_left = f"{sec // 60}m {sec % 60}s" if sec > 60 else f"{sec}s"
         await message.answer(
             text=REPLIES["many_requests"][user.language].format(time_left)
         )

@@ -19,8 +19,6 @@ async def stats(message: types.Message):
 
     base_log_msg = f"Admin {message.from_user.id} requested {payload} with result"
 
-    subcommands = ["total", "file", "lang", "reqs"]
-
     if "total" in payload:
         total_users = User.select().where(User.is_ban == False).count()  # noqa: E712
 
@@ -29,14 +27,12 @@ async def stats(message: types.Message):
         await message.answer(total_users)
 
     elif "file" in payload:
-        file = open(Path.cwd().joinpath("src/data/users.db"), "rb")
-        input_file = types.InputFile(file)
+        with open(Path.cwd().joinpath("src/data/users.db"), "rb") as file:
+            input_file = types.InputFile(file)
 
-        logger.info(f"{base_log_msg} <file>")
+            logger.info(f"{base_log_msg} <file>")
 
-        await message.answer_document(input_file)
-
-        file.close()
+            await message.answer_document(input_file)
 
     elif "reqs" in payload:
         total_requests = User.select(fn.SUM(User.requests)).scalar(as_tuple=True)
@@ -71,4 +67,6 @@ async def stats(message: types.Message):
 
     else:
         logger.info(f"{base_log_msg} no result.")
+        subcommands = ["total", "file", "lang", "reqs"]
+
         await message.answer(subcommands)
