@@ -10,9 +10,8 @@ def escape_dict(unsafe: dict) -> dict:
     for k, v in unsafe.items():
         if isinstance(v, dict):
             unsafe[k] = escape_dict(unsafe[k])
-        else:
-            if isinstance(v, str):
-                unsafe[k] = html.escape(v)
+        elif isinstance(v, str):
+            unsafe[k] = html.escape(v)
 
     return unsafe
 
@@ -26,12 +25,6 @@ def tree_display(input_dict: dict, depth: int = 0) -> str:
     :return: treefied message
     """
 
-    FINAL_CHAR = "  └ "
-    ENTRY_CHAR = "  ├ "
-    SKIP_CHAR = "  ┊ "
-    KEY_CHAR = ": "
-    NEWLINE_CHAR = "\n"
-
     # if depth == 0:
     #     out_str = "Message\n"
     # else:
@@ -42,8 +35,14 @@ def tree_display(input_dict: dict, depth: int = 0) -> str:
         final_index = len(input_dict) - 1
         current_index = 0
 
+        ENTRY_CHAR = "  ├ "
+        SKIP_CHAR = "  ┊ "
+        KEY_CHAR = ": "
+        NEWLINE_CHAR = "\n"
+
+        FINAL_CHAR = "  └ "
         for key, value in input_dict.items():
-            for _ in range(0, depth):
+            for _ in range(depth):
                 out_str += SKIP_CHAR
 
             if current_index == final_index:
